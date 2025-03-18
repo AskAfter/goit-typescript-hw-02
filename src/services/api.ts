@@ -6,7 +6,6 @@ const BASE_URL: string = 'https://api.unsplash.com/search/photos';
 
 interface Response {
   results: Image[];
-  total: number;
   total_pages: number;
 }
 
