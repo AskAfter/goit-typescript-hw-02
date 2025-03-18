@@ -4,7 +4,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import toast from 'react-hot-toast';
 
 interface SearchBarProps {
-  value: string;
+  value?: string;
   onSubmit: (value: string) => void;
 }
 
