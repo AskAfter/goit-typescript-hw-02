@@ -7,15 +7,8 @@ import Loader from '../Loader/Loader';
 import ImageModal from '../ImageModal/ImageModal';
 import fetchImages from '../../services/api';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import { Image } from '../../types';
 
-interface Image {
-  id: string;
-  urls: {
-    small: string;
-    regular: string;
-  };
-  alt_description?: string;
-}
 
 interface FetchImagesResponse {
   total_pages: number;
@@ -72,9 +65,11 @@ function App() {
   }, [images, page]);
 
   const handleSubmit = (newQuery: string) => {
-    setQuery(newQuery);
+    if (newQuery !== query) {
+      setQuery(newQuery);
     setImages([]);
     setPage(1);
+    }
   };
 
   const openModal = (image: Image) => {
