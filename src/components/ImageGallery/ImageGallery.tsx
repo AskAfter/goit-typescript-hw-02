@@ -18,9 +18,9 @@ const ImageGallery: FC<ImageGalleryProps> = ({ images, onImageClick }) => {
               src={image.urls.small}
               largeSrc={image.urls.regular}
               alt={image.alt_description || 'Image'}
-              likes={image.likes}
-              userNick={image.user.username}
-              userName={image.user.name}
+              likes={image.likes ?? 0}
+              userNick={image.user?.username || 'Unknown'}
+              userName={image.user?.name || 'Unknown User'}
               onClick={() => onImageClick(image)}
             />
           </li>
