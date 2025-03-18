@@ -8,28 +8,43 @@ import ImageModal from '../ImageModal/ImageModal';
 import fetchImages from '../../services/api';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
-function App() {
-  const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setError] = useState(false);
-  const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(null);
+interface Image {
+  id: string;
+  urls: {
+    small: string;
+    regular: string;
+  };
+  alt_description?: string;
+}
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+interface FetchImagesResponse {
+  total_pages: number;
+  results: Image[];
+}
+
+function App() {
+  const [images, setImages] = useState<Image[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setError] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
   const handleClick = () => {
-    if (page < totalPages) {
+    if (totalPages !== null && page < totalPages) {
       setPage(prev => prev + 1);
     }
   };
+
   useEffect(() => {
     if (!query) return;
+
     const getImages = async () => {
       try {
         setIsLoading(true);
-        const data = await fetchImages(query, page);
+        const data: FetchImagesResponse = await fetchImages(query, page);
         setTotalPages(data.total_pages);
         setImages(prev => [...prev, ...data.results]);
         setError(false);
@@ -45,10 +60,10 @@ function App() {
   useEffect(() => {
     if (page === 1) return;
 
-    const gallery = document.querySelector('#image-gallery'); // Отримуємо галерею
+    const gallery = document.querySelector('#image-gallery');
     if (gallery) {
       const cardHeight =
-        gallery.firstElementChild?.getBoundingClientRect().height || 0;
+        (gallery.firstElementChild as HTMLElement | null)?.getBoundingClientRect().height || 0;
       window.scrollBy({
         top: cardHeight * 2,
         behavior: 'smooth',
@@ -56,13 +71,13 @@ function App() {
     }
   }, [images, page]);
 
-  const handleSubmit = newQuery => {
+  const handleSubmit = (newQuery: string) => {
     setQuery(newQuery);
     setImages([]);
     setPage(1);
   };
 
-  const openModal = image => {
+  const openModal = (image: Image) => {
     setSelectedImage(image);
     setIsModalOpen(true);
   };
@@ -78,7 +93,7 @@ function App() {
       <ImageGallery images={images} onImageClick={openModal} />
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      {page < totalPages && !isError && (
+      {page < (totalPages ?? 0) && !isError && (
         <LoadMoreBtn handleClick={handleClick} />
       )}
       <ImageModal

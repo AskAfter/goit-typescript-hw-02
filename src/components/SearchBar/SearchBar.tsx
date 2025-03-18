@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
 import s from './SearchBar.module.css';
 import { AiOutlineSearch } from 'react-icons/ai';
 import toast from 'react-hot-toast';
 
-const SearchBar = ({ onSubmit }) => {
-  const [value, setValue] = useState('');
-  const handleSubmit = e => {
+interface SearchBarProps {
+  value: string;
+  onSubmit: (value: string) => void;
+}
+
+const SearchBar: FC<SearchBarProps> = ({ onSubmit }) => {
+  const [value, setValue] = useState<string>('');
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (value === '') {
       toast.error('fill search field', {

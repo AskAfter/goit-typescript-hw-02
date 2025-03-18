@@ -1,7 +1,18 @@
+import { FC } from 'react';
 import s from './ImageCard.module.css';
 import { AiOutlineUser, AiFillCamera, AiFillHeart } from 'react-icons/ai';
 
-const ImageCard = ({
+interface ImageCardProps {
+  src: string;
+  largeSrc: string;
+  alt?: string;
+  likes: number;
+  userNick: string;
+  userName: string;
+  onClick: () => void;
+}
+
+const ImageCard: FC<ImageCardProps> = ({
   src,
   largeSrc,
   alt,
@@ -12,7 +23,7 @@ const ImageCard = ({
 }) => {
   return (
     <div className={s.container} onClick={onClick}>
-      <img src={src} alt={alt} className={s.image} />
+      <img src={src} alt={alt  || 'Image'} className={s.image} />
       <div className={s.infoContainer}>
         <div className={s.iconTextBlock}>
           <AiFillHeart className={s.icon} />

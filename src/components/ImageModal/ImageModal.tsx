@@ -1,9 +1,17 @@
 import Modal from 'react-modal';
 import s from './ImageModal.module.css';
+import { FC } from 'react';
+import { Image } from '../../types';
 
 Modal.setAppElement('#root');
 
-const ImageModal = ({ isOpen, onClose, image }) => {
+interface ImageModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  image: Image | null;
+}
+
+const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, image }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -16,7 +24,7 @@ const ImageModal = ({ isOpen, onClose, image }) => {
         <div>
           <img
             src={image.urls.regular}
-            alt={image.alt_description}
+            alt={image.alt_description || 'Image'}
             className={s.image}
           />
         </div>

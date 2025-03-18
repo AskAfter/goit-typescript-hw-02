@@ -1,7 +1,8 @@
 import { DNA } from 'react-loader-spinner';
-import s from './Loader.module.css'; // Імпортуємо стилі для лоадера
+import s from './Loader.module.css';
+import { FC } from 'react';
 
-const Loader = () => {
+const Loader: FC = () => {
   return (
     <div className={s.loaderContainer}>
       <DNA
